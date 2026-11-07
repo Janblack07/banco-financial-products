@@ -1,0 +1,16 @@
+<div
+  class="skeleton-card"
+  aria-label="Cargando productos"
+  aria-busy="true">
+
+  @for (row of [1, 2, 3, 4, 5]; track row) {
+    <div class="skeleton-row">
+      <span class="skeleton skeleton--logo"></span>
+      <span class="skeleton skeleton--name"></span>
+      <span class="skeleton skeleton--description"></span>
+      <span class="skeleton skeleton--date"></span>
+      <span class="skeleton skeleton--date"></span>
+    </div>
+  }
+
+</div>

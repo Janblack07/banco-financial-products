@@ -1,0 +1,90 @@
+:host {
+  display: inline-flex;
+}
+
+.contextual-menu {
+  display: inline-flex;
+}
+
+.contextual-menu__trigger {
+  display: inline-grid;
+  place-items: center;
+
+  width: 28px;
+  height: 30px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 3px;
+
+  background: transparent;
+  color: #253b80;
+
+  font: inherit;
+  font-size: 1.1rem;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition: background-color 120ms ease;
+}
+
+.contextual-menu__trigger:hover {
+  background: #f0f2f5;
+}
+
+.contextual-menu__trigger:focus-visible {
+  outline: 2px solid #253b80;
+  outline-offset: 2px;
+}
+
+.contextual-menu__panel {
+  position: fixed;
+  z-index: 1000;
+
+  width: 130px;
+
+  overflow: hidden;
+
+  border: 1px solid #e1e5eb;
+  border-radius: 4px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 20px rgb(15 23 42 / 14%);
+}
+
+.contextual-menu__option {
+  display: block;
+
+  width: 100%;
+
+  padding: 10px 12px;
+
+  border: none;
+
+  background: transparent;
+  color: #374151;
+
+  font: inherit;
+  font-size: 0.76rem;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition: background-color 120ms ease;
+}
+
+.contextual-menu__option:hover {
+  background: #f5f6f8;
+}
+
+.contextual-menu__option--danger {
+  color: #c62828;
+}
+
+.contextual-menu__option--danger:hover {
+  background: #fff3f3;
+}

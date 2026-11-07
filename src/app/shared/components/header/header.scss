@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 78px;
+
+  background: #ffffff;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  color: #243f83;
+}
+
+.brand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  position: relative;
+  top: 1px;
+}
+
+.brand-icon svg {
+  display: block;
+
+  width: 30px;
+  height: 30px;
+
+  color: #243f83;
+}
+
+.brand-text {
+  display: inline-flex;
+  align-items: center;
+
+  margin: 0;
+
+  color: #243f83;
+
+  font-size: 25px;
+  font-weight: 700;
+
+  line-height: 20px;
+}
