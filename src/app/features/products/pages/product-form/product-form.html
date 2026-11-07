@@ -1,0 +1,238 @@
+<app-header />
+
+<main class="form-page">
+
+  <section class="form-card">
+
+    <div class="form-title">
+      <h1>
+        {{ isEditMode() ? 'Formulario de Edición' : 'Formulario de Registro' }}
+      </h1>
+    </div>
+
+    @if (serverError()) {
+      <div
+        class="alert alert--error"
+        role="alert"
+      >
+        {{ serverError() }}
+      </div>
+    }
+
+    @if (successMessage()) {
+      <div
+        class="alert alert--success"
+        role="status"
+      >
+        {{ successMessage() }}
+      </div>
+    }
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+      novalidate
+    >
+
+      <div class="form-grid">
+
+        <!-- ID -->
+        <div class="field">
+          <label for="id">ID</label>
+
+          <input
+            id="id"
+            type="text"
+            formControlName="id"
+            maxlength="10"
+            autocomplete="off"
+          />
+
+          @if (hasError('id', 'required')) {
+            <span class="field-error">
+              Este campo es requerido.
+            </span>
+          }
+
+          @if (hasError('id', 'minlength')) {
+            <span class="field-error">
+              El ID debe tener mínimo 3 caracteres.
+            </span>
+          }
+
+          @if (hasError('id', 'maxlength')) {
+            <span class="field-error">
+              El ID debe tener máximo 10 caracteres.
+            </span>
+          }
+
+          @if (hasError('id', 'idExists')) {
+            <span class="field-error">
+              El ID ya existe.
+            </span>
+          }
+        </div>
+
+        <!-- NOMBRE -->
+        <div class="field">
+          <label for="name">Nombre</label>
+
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            maxlength="100"
+            autocomplete="off"
+          />
+
+          @if (hasError('name', 'required')) {
+            <span class="field-error">
+              Este campo es requerido.
+            </span>
+          }
+
+          @if (hasError('name', 'minlength')) {
+            <span class="field-error">
+              El nombre debe tener mínimo 5 caracteres.
+            </span>
+          }
+
+          @if (hasError('name', 'maxlength')) {
+            <span class="field-error">
+              El nombre debe tener máximo 100 caracteres.
+            </span>
+          }
+        </div>
+
+        <!-- DESCRIPCIÓN -->
+        <div class="field">
+          <label for="description">Descripción</label>
+
+          <input
+            id="description"
+            type="text"
+            formControlName="description"
+            maxlength="200"
+            autocomplete="off"
+          />
+
+          @if (hasError('description', 'required')) {
+            <span class="field-error">
+              Este campo es requerido.
+            </span>
+          }
+
+          @if (hasError('description', 'minlength')) {
+            <span class="field-error">
+              La descripción debe tener mínimo 10 caracteres.
+            </span>
+          }
+
+          @if (hasError('description', 'maxlength')) {
+            <span class="field-error">
+              La descripción debe tener máximo 200 caracteres.
+            </span>
+          }
+        </div>
+
+        <!-- LOGO -->
+        <div class="field">
+          <label for="logo">Logo</label>
+
+          <input
+            id="logo"
+            type="text"
+            formControlName="logo"
+            autocomplete="off"
+          />
+
+          @if (hasError('logo', 'required')) {
+            <span class="field-error">
+              Este campo es requerido.
+            </span>
+          }
+        </div>
+
+        <!-- FECHA LIBERACIÓN -->
+        <div class="field">
+          <label for="date_release">
+            Fecha Liberación
+          </label>
+
+          <input
+            id="date_release"
+            type="date"
+            formControlName="date_release"
+          />
+
+          @if (hasError('date_release', 'required')) {
+            <span class="field-error">
+              Este campo es requerido.
+            </span>
+          }
+
+          @if (hasError('date_release', 'releaseDate')) {
+            <span class="field-error">
+              La fecha debe ser igual o mayor a la fecha actual.
+            </span>
+          }
+        </div>
+
+        <!-- FECHA REVISIÓN -->
+        <div class="field">
+          <label for="date_revision">
+            Fecha Revisión
+          </label>
+
+          <input
+            id="date_revision"
+            type="date"
+            formControlName="date_revision"
+            readonly
+          />
+
+          @if (hasError('date_revision', 'required')) {
+            <span class="field-error">
+              Este campo es requerido.
+            </span>
+          }
+
+          @if (hasError('date_revision', 'revisionDate')) {
+            <span class="field-error">
+              La fecha debe ser exactamente un año posterior a la fecha de liberación.
+            </span>
+          }
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          [disabled]="submitting()"
+          (click)="reset()"
+        >
+          Reiniciar
+        </button>
+
+        <button
+          type="submit"
+          class="primary-button"
+          [disabled]="form.invalid || form.pending || submitting()"
+        >
+          @if (submitting()) {
+            Guardando...
+          } @else {
+            {{ isEditMode() ? 'Actualizar' : 'Agregar' }}
+          }
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+</main>
