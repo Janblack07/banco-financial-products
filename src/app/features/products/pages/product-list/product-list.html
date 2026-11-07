@@ -1,0 +1,315 @@
+<app-header />
+
+<main class="products-page">
+
+  <section class="products-container">
+
+    @if (successMessage()) {
+      <div
+        class="feedback feedback--success"
+        role="status"
+      >
+        {{ successMessage() }}
+      </div>
+    }
+
+    @if (
+      errorMessage() &&
+      !loading()
+    ) {
+      <div
+        class="feedback feedback--error"
+        role="alert"
+      >
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <div class="toolbar">
+
+      <div class="search-wrapper">
+
+        <input
+          #searchInput
+          type="search"
+          placeholder="Search..."
+          aria-label="Buscar productos"
+          [value]="searchTerm()"
+          (input)="
+            onSearch(
+              searchInput.value
+            )
+          "
+        />
+
+      </div>
+
+      <button
+        type="button"
+        class="add-button"
+        (click)="goToCreate()"
+      >
+        Agregar
+      </button>
+
+    </div>
+
+    @if (loading()) {
+
+      <app-skeleton />
+
+    } @else {
+
+      <div class="table-card">
+
+        <div class="table-scroll">
+
+          <table>
+
+            <thead>
+              <tr>
+
+                <th>
+                  Logo
+                </th>
+
+                <th>
+                  Nombre del producto
+                </th>
+
+                <th>
+                  <span
+                    class="header-with-info"
+                  >
+                    Descripción
+
+                    <span
+                      class="info-icon"
+                      title="Descripción del producto"
+                    >
+                      i
+                    </span>
+                  </span>
+                </th>
+
+                <th>
+                  <span
+                    class="header-with-info"
+                  >
+                    Fecha de liberación
+
+                    <span
+                      class="info-icon"
+                      title="Fecha de lanzamiento del producto"
+                    >
+                      i
+                    </span>
+                  </span>
+                </th>
+
+                <th>
+                  <span
+                    class="header-with-info"
+                  >
+                    Fecha de reestructuración
+
+                    <span
+                      class="info-icon"
+                      title="Fecha de revisión del producto"
+                    >
+                      i
+                    </span>
+                  </span>
+                </th>
+
+                <th
+                  class="actions-column"
+                  aria-label="Acciones"
+                ></th>
+
+              </tr>
+            </thead>
+
+            <tbody>
+
+              @for (
+                product of paginatedProducts();
+                track product.id
+              ) {
+
+                <tr>
+
+                  <td>
+                    <img
+                      class="product-logo"
+                      [src]="product.logo"
+                      [alt]="
+                        'Logo de ' +
+                        product.name
+                      "
+                      (error)="
+                        onImageError($event)
+                      "
+                    />
+                  </td>
+
+                  <td>
+                    {{ product.name }}
+                  </td>
+
+                  <td>
+                    {{ product.description }}
+                  </td>
+
+                  <td>
+                    {{ product.date_release }}
+                  </td>
+
+                  <td>
+                    {{ product.date_revision }}
+                  </td>
+
+                  <td class="actions-cell">
+
+                    <app-contextual-menu
+                      [ariaLabel]="
+                        'Opciones para ' +
+                        product.name
+                      "
+                      (edit)="
+                        editProduct(product)
+                      "
+                      (remove)="
+                        openDeleteModal(product)
+                      "
+                    />
+
+                  </td>
+
+                </tr>
+
+              } @empty {
+
+                <tr>
+                  <td
+                    colspan="6"
+                    class="empty-row"
+                  >
+                    No se encontraron
+                    productos.
+                  </td>
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <div class="table-footer">
+
+          <strong>
+            {{ resultCount() }}
+
+            {{
+              resultCount() === 1
+                ? 'Resultado'
+                : 'Resultados'
+            }}
+          </strong>
+
+          <div class="pagination">
+
+            <button
+              type="button"
+              class="pagination-button"
+              aria-label="Página anterior"
+              [disabled]="
+                currentPage() === 1
+              "
+              (click)="previousPage()"
+            >
+              ‹
+            </button>
+
+            <span>
+              {{ currentPage() }}
+              /
+              {{ totalPages() }}
+            </span>
+
+            <button
+              type="button"
+              class="pagination-button"
+              aria-label="Página siguiente"
+              [disabled]="
+                currentPage() ===
+                totalPages()
+              "
+              (click)="nextPage()"
+            >
+              ›
+            </button>
+
+            <select
+              aria-label="Registros por página"
+              [value]="pageSize()"
+              (change)="
+                onPageSizeChange(
+                  $any(
+                    $event.target
+                  ).value
+                )
+              "
+            >
+              <option value="5">
+                5
+              </option>
+
+              <option value="10">
+                10
+              </option>
+
+              <option value="20">
+                20
+              </option>
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    }
+
+  </section>
+
+</main>
+
+@if (
+  productToDelete();
+  as product
+) {
+
+  <app-confirm-modal
+    title="Eliminar producto"
+    [message]="
+      '¿Estás seguro de eliminar el producto ' +
+      product.name +
+      '?'
+    "
+    cancelText="Cancelar"
+    confirmText="Confirmar"
+    [loading]="deleting()"
+    (cancelled)="
+      closeDeleteModal()
+    "
+    (confirmed)="
+      confirmDelete()
+    "
+  />
+
+}
